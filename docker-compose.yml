@@ -4,9 +4,9 @@ disconf-mysql:
     image: mysql:5.7
     
     volumes:
-        - C:/work/docker/disconf/mysql.cnf:/etc/mysql/my.cnf
-        - C:/work/docker/disconf/sql:/docker-entrypoint-initdb.d
-        - C:/work/docker/disconf/mysqlData:/var/lib/mysql
+        - ${pwd}/mysql/mysql.cnf:/etc/mysql/my.cnf
+        - ${pwd}/mysql/sql:/docker-entrypoint-initdb.d
+        - ${pwd}/mysql/mysqlData:/var/lib/mysql
     environment:
         - MYSQL_ROOT_PASSWORD=123456
     ports:
@@ -22,15 +22,15 @@ disconf-web:
         - disconf-mysql
         - disconf-zoo
     volumes:
-        - C:/work/docker/disconf/disconf-rd/working/war:/usr/local/tomcat/webapps/ROOT
-        - C:/work/docker/disconf/tomcatlogs:/usr/local/tomcat/logs
+        - ${pwd}/disconf-rd/working/war:/usr/local/tomcat/webapps/ROOT
+        - ${pwd}/disconf-rd/tomcatlogs:/usr/local/tomcat/logs
 disconf-nginx:
     image: nginx:1.9
     links:
         - disconf-web
     volumes:
-        - C:/work/docker/disconf/nginx.conf:/etc/nginx/nginx.conf:ro
-        - C:/work/docker/disconf/disconf-rd/working/war/html:/home/work/dsp/disconf-rd/war/html:ro
-        - C:/work/docker/disconf/nginxlogs:/home/work/var/logs/disconf
+        - ${pwd}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+        - ${pwd}/disconf-rd/working/war/html:/home/work/dsp/disconf-rd/war/html:ro
+        - ${pwd}/nginx/nginxlogs:/home/work/var/logs/disconf
     ports:
         - "8081:8081"
