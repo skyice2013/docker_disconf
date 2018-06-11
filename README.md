@@ -1,11 +1,15 @@
 ## 准备
 ### 运行镜像打包disconf
 
+```
 docker build -t scoop/disconf-build .
+```
 
 ### 运行镜像容器，将打包的目录挂载到本地
 
+```
 docker run -v C:/work/docker/disconf/disconf-rd/working:/home/work/dsp/disconf-rd/working -v C:/work/docker/disconf/disconf-rd/config:/home/work/dsp/disconf-rd/online-resources --name disconf-build scoop/disconf-build
+```
 
 ### 整理sql文件
 
@@ -17,5 +21,8 @@ docker run -v C:/work/docker/disconf/disconf-rd/working:/home/work/dsp/disconf-r
 201512/20151225.sql
 20160701/20160701.sql
 ```
-运行
+## 运行
+
+```
 docker-compose up -d
+```
