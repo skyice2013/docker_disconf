@@ -1,0 +1,36 @@
+disconf-redis:
+    image: redis:3.2.11
+disconf-mysql:
+    image: mysql:5.7
+    
+    volumes:
+        - C:/work/docker/disconf/mysql.cnf:/etc/mysql/my.cnf
+        - C:/work/docker/disconf/sql:/docker-entrypoint-initdb.d
+        - C:/work/docker/disconf/mysqlData:/var/lib/mysql
+    environment:
+        - MYSQL_ROOT_PASSWORD=123456
+    ports:
+        - "3306:3306"
+disconf-zoo:
+    image: zookeeper:3.4.12
+    ports:
+        - "2181:2181"
+disconf-web:
+    image: tomcat:8-jre8
+    links:
+        - disconf-redis
+        - disconf-mysql
+        - disconf-zoo
+    volumes:
+        - C:/work/docker/disconf/disconf-rd/working/war:/usr/local/tomcat/webapps/ROOT
+        - C:/work/docker/disconf/tomcatlogs:/usr/local/tomcat/logs
+disconf-nginx:
+    image: nginx:1.9
+    links:
+        - disconf-web
+    volumes:
+        - C:/work/docker/disconf/nginx.conf:/etc/nginx/nginx.conf:ro
+        - C:/work/docker/disconf/disconf-rd/working/war/html:/home/work/dsp/disconf-rd/war/html:ro
+        - C:/work/docker/disconf/nginxlogs:/home/work/var/logs/disconf
+    ports:
+        - "8081:8081"
